@@ -1,0 +1,26 @@
+{
+  "name": "node-js-blog-tutorial",
+  "version": "1.0.0",
+  "description": "Create a blog using Node.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/denismcmahon/Node_Blog_Tutorial.git"
+  },
+  "author": "Denis McMahon",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/denismcmahon/Node_Blog_Tutorial/issues"
+  },
+  "homepage": "https://github.com/denismcmahon/Node_Blog_Tutorial#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "express-edge": "^2.0.2",
+    "nodemon": "^2.0.4",
+    "path": "^0.12.7",
+    "startbootstrap-clean-blog": "^5.0.9"
+  }
+}
