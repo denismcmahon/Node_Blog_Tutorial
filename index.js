@@ -1,15 +1,27 @@
 const path = require('path');
-const expressEdge = require('express-edge');
+const { config, engine } = require('express-edge');
 const express = require('express');
+const mongoose = require('mongoose');
 
 const app = new express();
 
+mongoose
+  .connect('mongodb://localhost:27017/node-blog', { useUnifiedTopology: true, useNewUrlParser: true })
+  .then(() => 'You are now connected to Mongo!')
+  .catch((err) => console.error('Something went wrong', err));
+
 app.use(express.static('public'));
-app.use(expressEdge);
+app.use(engine);
 app.set('views', __dirname + '/views');
 
 app.get('/', (req, res) => {
-  res.sendFile(path.resolve(__dirname, 'pages/index.html'));
+  console.log('INDEX RENDER');
+  res.render('index');
+});
+
+app.get('/posts/new', (req, res) => {
+  console.log('NEW POST RENDER');
+  res.render('create');
 });
 
 app.get('/about', (req, res) => {
