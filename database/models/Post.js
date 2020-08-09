@@ -1,4 +1,4 @@
-const mongoose = reuquire('mongoose');
+const mongoose = require('mongoose');
 
 const PostSchema = new mongoose.Schema({
   title: String,
