@@ -3,13 +3,17 @@ const { config, engine } = require('express-edge');
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const fileUpload = require('express-fileupload');
 
 const Post = require('./database/models/Post');
 
 const app = new express();
 
 mongoose
-  .connect('mongodb://localhost:27017/node-blog', { useUnifiedTopology: true, useNewUrlParser: true })
+  .connect('mongodb://localhost:27017/node-blog', {
+    useUnifiedTopology: true,
+    useNewUrlParser: true,
+  })
   .then(() => console.log('You are now connected to Mongo!'))
   .catch((err) => console.error('Something went wrong', err));
 
@@ -23,18 +27,31 @@ app.use(
   })
 );
 
-app.get('/', (req, res) => {
-  res.render('index');
+// render the home page with the post from the db
+app.get('/', async (req, res) => {
+  const posts = await Post.find({});
+  res.render('index', {
+    posts,
+  });
 });
 
+// render the create post page
 app.get('/posts/new', (req, res) => {
   res.render('create');
 });
 
+// create and save a new post to the db
 app.post('/posts/store', (req, res) => {
-  console.log(req.body);
   Post.create(req.body, (error, post) => {
     res.redirect('/');
+  });
+});
+
+// render the post page with the relevant post
+app.get('/post/:id', async (req, res) => {
+  const post = await Post.findById(req.params.id);
+  res.render('post', {
+    post,
   });
 });
 
