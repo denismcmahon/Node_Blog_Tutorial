@@ -17,6 +17,7 @@ mongoose
   .then(() => console.log('You are now connected to Mongo!'))
   .catch((err) => console.error('Something went wrong', err));
 
+app.use(fileUpload());
 app.use(express.static('public'));
 app.use(engine);
 app.set('views', __dirname + '/views');
@@ -42,8 +43,17 @@ app.get('/posts/new', (req, res) => {
 
 // create and save a new post to the db
 app.post('/posts/store', (req, res) => {
-  Post.create(req.body, (error, post) => {
-    res.redirect('/');
+  const { image } = req.files;
+  image.mv(path.resolve(__dirname, 'public/posts', image.name), (error) => {
+    Post.create(
+      {
+        ...req.body,
+        image: `/posts/${image.name}`,
+      },
+      (error, post) => {
+        res.redirect('/');
+      }
+    );
   });
 });
 
