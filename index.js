@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const fileUpload = require('express-fileupload');
 const expressSession = require('express-session');
+const connectMongo = require('connect-mongo');
 
 const createPostController = require('./controllers/createPost');
 const homePageController = require('./controllers/homePage');
@@ -26,6 +27,8 @@ mongoose
   .then(() => console.log('You are now connected to Mongo!'))
   .catch((err) => console.error('Something went wrong', err));
 
+const mongoStore = connectMongo(expressSession);
+
 app.use(fileUpload());
 app.use(express.static('public'));
 app.use(engine);
@@ -41,6 +44,9 @@ app.use(
     secret: 'secret',
     resave: true,
     saveUninitialized: true,
+    store: new mongoStore({
+      mongooseConnection: mongoose.connection,
+    }),
   })
 );
 
